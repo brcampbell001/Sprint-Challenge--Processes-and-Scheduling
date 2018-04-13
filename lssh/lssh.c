@@ -3,6 +3,8 @@
 #include <unistd.h>
 #include <string.h>
 #include <sys/wait.h>
+#include <errno.h>
+#include <signal.h>
 
 #define PROMPT "lambda-shell$ "
 
@@ -86,7 +88,23 @@ int main(void)
         }
 
         // Exit the shell if args[0] is the built-in "exit" command
-       
+       if (strcmp(args[0], "exit") == 0) {
+           break;
+       }
+       else if (strcmp(args[0], "cd") == 0) {
+           char *homeDir = getenv("HOME");
+           char *dir = (args_count > 1) ? args[1] :homeDir;
+
+           if (chdir(dir) == 0) {
+               char *getcd_buf;
+               char *currDir = getcwd(getcd_buf, 128);
+               printf("Current directory successfully switched to '%s'\n", currDir);
+           } else {
+               printf("No such file or directory\n");
+               continue;
+           }
+       }
+
 
         #if DEBUG
 
