@@ -2,6 +2,7 @@
 #include <stdlib.h>
 #include <unistd.h>
 #include <string.h>
+#include <sys/wait.h>
 
 #define PROMPT "lambda-shell$ "
 
@@ -85,13 +86,9 @@ int main(void)
         }
 
         // Exit the shell if args[0] is the built-in "exit" command
-        if (strcmp(args[0], "exit") == 0) {
-            break;
-        }
+       
 
         #if DEBUG
-
-        // Some debugging output
 
         // Print out the parsed command line in args[]
         for (int i = 0; args[i] != NULL; i++) {
@@ -99,10 +96,30 @@ int main(void)
         }
 
         #endif
-        
+
         /* Add your code for implementing the shell's logic here */
         
-    }
-
+        /*** Auto Exits After Execution of Command #nobueno ***/
+        // if (fork() == 0) {
+        //     execvp(args[0], args);
+        // } else {
+        //     wait(NULL);
+        // }
+        
+        if (strcmp(args[0], "exit") == 0) {
+            break;
+            }
+            
+            pid_t pid = fork();
+            if (pid < 0) {
+                fprintf(stderr, "fork failed\n");
+                } else if (pid == 0) {
+                    int status;
+                    waitpid(pid, &status, 0);
+                    } else {
+                        execvp(args[0], &args[0]);
+                        }
+                    }
     return 0;
 }
+
