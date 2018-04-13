@@ -6,16 +6,33 @@ Add your answers inline, below, with your pull request.
 
 1. List all of the main states a process may be in at any point in time on a
    standard Unix system. Briefly explain what each of these states mean.
+   
+   * `NEW: Process created and primed for state change to ready.`
+   
+   * `READY: Process is at top of queue and ready for execution on CPU.`
+   
+   * `BLOCKED: Process transitions to this state if it cannot be executed without an external change in state occurring. For example, a process may block on a call to a printer if the printer is not available.`
+   
+   * `RUNNING: Process is moved into the running state as it is chosen to be executed. Instructions are executed by a CPU or cores of a system. Processes can run in either kernel or user mode.`
+   
+   * `TERMINATED: Processes can be terminated either from the running state via completion or explicity being killed.`
 
 2. What is a Zombie Process? How does it get created? How does it get destroyed?
 
+    `A Zombie Process is when a parent process does not wait for a child process and starts its subsequent tasks. What happens is that the when the child is needing to terminate, the exit status is not read. So, there remains an entry in the process table even after the termination of the child. By utilizing the wait() or waitpid(), the parent will wait for the child to execute and collect its status to remove from the process table.`
+
 3. Describe the job of the Scheduler in the OS in general.
 
+   `A process scheduler is an essential part of a multitasking operating system. These systems allow more than one process to be loaded into the executable memory at a time and the loaded process shares the CPU using time multiplexing. It handles removal of a running process from the CPU and selects another process dependent upon a certain strategy.` 
+
 4. Describe the benefits of the MLFQ over a plain Round-Robin scheduler.
+
+   `A plain Round-Robin scheduler gives attention to every process from the CPU and basically try to add progress to each process at a near equal rate. While this is great and all, it cuts down performance time because it spreads the CPU thin trying to maintain execution progress across multiple processes. MLFQ addresses this drawback by adding more efficiency essentially by learning the behavior of processes, setting priorities, and executing processes in the best way possible for both efficiency and process importance. All in all, by learning processes, MLFQ can assemble schedules that operate off priorities and arrange processes based on their past history and usage to predict future behavior.`
 
 ## Programming Exercise: The Lambda School Shell (`lssh`)
 
 Important Safety Tip: Resist the urge to start coding until you:
+
 1. Read this complete challenge
 
 then
@@ -23,6 +40,7 @@ then
 2. Inventory the code and figure out what needs to be written where.
 
 ### Task 1: Implement the Ability to Execute Arbitrary Commands
+
 This program implements a new shell that you can use to run commands from in
 Unix, similar to bash!
 
