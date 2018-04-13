@@ -111,9 +111,9 @@ int main(void)
             }
             
             pid_t pid = fork();
-            if (pid < 0) {
+            if (pid == -1) {
                 fprintf(stderr, "fork failed\n");
-                } else if (pid == 0) {
+                } else if (pid > 0) {
                     int status;
                     waitpid(pid, &status, 0);
                     } else {
